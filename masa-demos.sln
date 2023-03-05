@@ -7,7 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7733DADD-FA8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{765F25A1-F8AA-47B5-A1CE-1BB5EA9CE052}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.WebApi", "src\Demo.WebApi\Demo.WebApi.csproj", "{B3238E05-22A5-4F43-977B-20C262316BD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Cqrs", "src\Demo.Cqrs\Demo.Cqrs.csproj", "{B3238E05-22A5-4F43-977B-20C262316BD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{8838DE0F-CB3F-4EF1-B5BC-D667019A4F3E}"
+	ProjectSection(SolutionItems) = preProject
+		common.props = common.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MasaFactory", "src\Demo.MasaFactory\Demo.MasaFactory.csproj", "{5595DAA7-3B1E-488F-8266-D81C71294686}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +26,17 @@ Global
 		{B3238E05-22A5-4F43-977B-20C262316BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3238E05-22A5-4F43-977B-20C262316BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3238E05-22A5-4F43-977B-20C262316BD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5595DAA7-3B1E-488F-8266-D81C71294686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5595DAA7-3B1E-488F-8266-D81C71294686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5595DAA7-3B1E-488F-8266-D81C71294686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5595DAA7-3B1E-488F-8266-D81C71294686}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B3238E05-22A5-4F43-977B-20C262316BD7} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
+		{5595DAA7-3B1E-488F-8266-D81C71294686} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F37FEC-2737-4AA5-87ED-DAEC85E74ABD}

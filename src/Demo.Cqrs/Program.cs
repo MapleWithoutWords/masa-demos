@@ -1,6 +1,7 @@
 using Demo.WebApi.Domain.AuthManager;
 using Demo.WebApi.Domain.AuthManager.Entities;
 using Demo.WebApi.Infrastructures;
+using Masa.BuildingBlocks.Caching;
 using Masa.BuildingBlocks.Data.UoW;
 using Masa.BuildingBlocks.Ddd.Domain.Repositories;
 using Masa.BuildingBlocks.Dispatcher.Events;
@@ -17,6 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+builder.Services.AddMultilevelCache(opt => opt.UseStackExchangeRedisCache());
 
 builder.Services.AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
@@ -45,7 +48,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DemoDbContext>();
-    context.Database.Migrate();
+    //context.Database.Migrate();
 
 
     if (!context.Roles.Any())

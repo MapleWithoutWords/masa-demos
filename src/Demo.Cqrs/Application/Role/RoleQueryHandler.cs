@@ -8,17 +8,22 @@ using Masa.BuildingBlocks.Ddd.Domain.Repositories;
 using Masa.Contrib.Dispatcher.Events;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Masa.BuildingBlocks.Caching;
 
 namespace Demo.WebApi.Application.Role
 {
     public class RoleQueryHandler
     {
         private readonly IRoleRepository _roleRepository;
+        private readonly IMultilevelCacheClient _cacheClient;
 
-        public RoleQueryHandler(IRoleRepository roleRepository)
+        public RoleQueryHandler(IRoleRepository roleRepository, IMultilevelCacheClient cacheClient)
         {
             _roleRepository = roleRepository;
+            _cacheClient = cacheClient;
         }
+
+        private const string RoleQueryCacheKey = "RoleQueryKey";
 
         [EventHandler]
         public async Task QueryListHanlderAsync(RoleGetListQuery query)
@@ -35,15 +40,25 @@ namespace Demo.WebApi.Application.Role
 
             var roles = await queryable.Skip(((query.PageIndex - 1) * query.PageSize)).Take(query.PageSize).ToListAsync();
 
-
-            query.Result = new PaginatedItemsViewModel<RoleGetListOutput>(query.PageIndex, query.PageSize, roleCount, roles.Select(e => new RoleGetListOutput
+            var cacheResultData = await _cacheClient.GetAsync<PaginatedItemsViewModel<RoleGetListOutput>>(RoleQueryCacheKey);
+            if (cacheResultData != null)
             {
-                CreationTime = e.CreationTime,
-                Id = e.Id,
-                Name = e.Name,
-                Remark = e.Remark,
+                query.Result = cacheResultData;
+                return;
             }
-            ).ToList());
+            else
+            {
+                query.Result = new PaginatedItemsViewModel<RoleGetListOutput>(query.PageIndex, query.PageSize, roleCount, roles.Select(e => new RoleGetListOutput
+                {
+                    CreationTime = e.CreationTime,
+                    Id = e.Id,
+                    Name = e.Name,
+                    Remark = e.Remark,
+                }
+                ).ToList());
+                await _cacheClient.SetAsync<PaginatedItemsViewModel<RoleGetListOutput>>(RoleQueryCacheKey,query.Result);
+            }
+
 
         }
     }
