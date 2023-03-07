@@ -14,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		common.props = common.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MasaFactory", "src\Demo.MasaFactory\Demo.MasaFactory.csproj", "{5595DAA7-3B1E-488F-8266-D81C71294686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.MasaFactory", "src\Demo.MasaFactory\Demo.MasaFactory.csproj", "{5595DAA7-3B1E-488F-8266-D81C71294686}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MultilevelCache", "src\Demo.MultilevelCache\Demo.MultilevelCache.csproj", "{DED5634D-0DD9-40B1-A7AF-917EE421F160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 		{5595DAA7-3B1E-488F-8266-D81C71294686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5595DAA7-3B1E-488F-8266-D81C71294686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5595DAA7-3B1E-488F-8266-D81C71294686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED5634D-0DD9-40B1-A7AF-917EE421F160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED5634D-0DD9-40B1-A7AF-917EE421F160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED5634D-0DD9-40B1-A7AF-917EE421F160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED5634D-0DD9-40B1-A7AF-917EE421F160}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B3238E05-22A5-4F43-977B-20C262316BD7} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
 		{5595DAA7-3B1E-488F-8266-D81C71294686} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
+		{DED5634D-0DD9-40B1-A7AF-917EE421F160} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F37FEC-2737-4AA5-87ED-DAEC85E74ABD}
