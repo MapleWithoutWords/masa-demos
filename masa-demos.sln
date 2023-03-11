@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.MultilevelCache", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Caching", "Caching", "{22922BB5-DD27-484B-A985-726A3D81AD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DistributedCache", "src\CachingDemo\Demo.DistributedCache\Demo.DistributedCache.csproj", "{D525DD00-7703-4696-BB9A-B31C2E8AA8BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.DistributedCache", "src\CachingDemo\Demo.DistributedCache\Demo.DistributedCache.csproj", "{D525DD00-7703-4696-BB9A-B31C2E8AA8BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

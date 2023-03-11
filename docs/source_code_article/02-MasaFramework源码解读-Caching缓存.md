@@ -42,11 +42,11 @@
 
 ### 代码设计
 
->  Masa Framework整个缓存组件分为三个类库项目，分别是：```Masa.BuildingBlocks.Caching```、```Masa.Cotrib.Caching.Distributed.StackExchangeRedis```、```Masa.Contrib.Caching.MultilevelCache```  。
+>  Masa Framework整个缓存组件分为三个类库项目，分别是：```Masa.BuildingBlocks.Caching```、```Masa.Contrib.Caching.Distributed.StackExchangeRedis```、```Masa.Contrib.Caching.MultilevelCache```  。
 
 ​		首先**```Masa.BuildingBlocks.Caching```**这个类库就是将我们经常用到的缓存方法抽象了一层（IDistributedCacheClient、IMultilevelCacheClient），其中包含分布式缓存以及多级缓存常用的方法，如：Get、Set、Refresh、Remove，分布式缓存中的（Subscribe、Publish等）。
 
-​		而**```Masa.Cotrib.Caching.Distributed.StackExchangeRedis ```**这个类库实现了分布式缓存（PS：这个库没有实现多级缓存IMultilevelCacheClient接口，个人觉得其实应该将Masa.BuildingBlocks.Caching这个类库再拆分出两个包，将分布式和多级缓存分开）。
+​		而**```Masa.Contrib.Caching.Distributed.StackExchangeRedis ```**这个类库实现了分布式缓存（PS：这个库没有实现多级缓存IMultilevelCacheClient接口，个人觉得其实应该将Masa.BuildingBlocks.Caching这个类库再拆分出两个包，将分布式和多级缓存分开）。
 
 ​		最后**```Masa.Contrib.Caching.MultilevelCache```**这个类库实现了多级缓存（这个类库没有实现分布式缓存IDistributedCacheClient接口，但是多级缓存依赖了IDistributedCacheClient）。最终整个缓存的设计如下图所示：
 
@@ -66,7 +66,7 @@
     * ```DistributedCacheClientFactoryBase``` ：分布式缓存创建工厂实现类，创建```IDistributedCacheClient``` 接口实例。
     * ```IMultilevelCacheClientFactory``` ：用于创建多级缓存```IMultilevelCacheClient``` 接口，继承自```ICacheClientFactory<IMultilevelCacheClient> ``` 。
     * ```MultilevelCacheClientFactoryBase``` ：多级缓存创建工厂实现类，创建```IMultilevelCacheClient``` 接口实例。
-* ```Masa.Cotrib.Caching.Distributed.StackExchangeRedis``` ： 分布式缓存```IDistributedCacheClient```接口的实现
+* ```Masa.Contrib.Caching.Distributed.StackExchangeRedis``` ： 分布式缓存```IDistributedCacheClient```接口的实现
   * ```RedisCacheClientBase``` ：redis实现分布式缓存接口，进行再一步封装，将redis连接、订阅、配置等初始化。继承```DistributedCacheClientBase```
   * ```RedisCacheClient``` ：分布式缓存的redis实现，继承```RedisCacheClientBase``` 
 
@@ -78,13 +78,62 @@
 
 ## Demo案例
 
+> Demo案例项目地址：https://github.com/MapleWithoutWords/masa-demos/tree/main/src/CachingDemo
+>
 > 上面也说到Masa Framework的缓存组件不与框架强绑定，也就是说我们可以在自己的框架中使用masa的缓存组件，下面我将展示两个项目，它们分别使用分布式缓存和多级缓存。
 
-### 分布式缓存使用demo
+### 分布式缓存使用
+
+1. 第一步，在我们的项目中安装分布式缓存组件```Masa.Contrib.Caching.Distributed.StackExchangeRedis```，或在项目目录下使用命令行安装
+
+```shell
+dotnet add package Masa.Contrib.Caching.Distributed.StackExchangeRedis
+```
+
+2. 第二步，在Program.cs文件中添加以下代码
+
+```c#
+builder.Services.AddDistributedCache(opt =>
+{
+    opt.UseStackExchangeRedisCache();
+});
+```
+
+3. 第三步，在配置文件中增加以下配置。这边在补充以下，masa的redis分布式缓存是支持集群的，只需要在Servers下配置多个节点就行
+
+```json
+"RedisOptions": {
+  "Servers": [
+    {
+      "Host": "127.0.0.1",
+      "Port": "6391"
+    }
+  ],
+  "DefaultDatabase": 0,
+  "Password": "123456"
+}
+```
+
+4. 在构造函数中注入 ```IDistributedCacheClient``` 或者 ```IDistributedCacheClientFactory``` 对象，其实直接注入的```IDistributedCacheClient``` 也是由```IDistributedCacheClientFactory``` 创建之后，注入到容器中的单例对象。
+
+   * 构造函数中注入 ```IDistributedCacheClient``` ：这个注入的对象生命周期为单例，也就是说从容器中获取的始终是同一个对象
+   * 使用```IDistributedCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，我看这内部打开了redis连接并没有关闭
+
+   
+
+4. 
 
 
 
-### 多级缓存使用demo
+
+
+
+
+
+
+
+
+### 多级缓存使用
 
 
 
