@@ -1,4 +1,4 @@
-# Masa Framework源码解读-缓存设计（分布式缓存进阶之多级缓存）
+# Masa Framework源码解读-缓存组件（分布式缓存进阶之多级缓存）
 
 ## 序言
 
@@ -73,7 +73,7 @@
 * ```Masa.Contrib.Caching.MultilevelCache``` ：多级缓存实现
   * MultilevelCacheClient ：多级缓存实现，内部依赖```IDistributedCacheClient``` 。
 
-> 整个缓存组件的设计，最主要类是这些，当然还有一些option配置和帮助类，我就没有画出来，这个留待大家自己去看源码
+> 整个缓存组件的设计，最主要类是这些，当然还有一些option配置和帮助类，我就没有画出来，这个留待大家自己去探索
 
 
 ## Demo案例
@@ -84,10 +84,10 @@
 
 ### 分布式缓存使用
 
-1. 第一步，在我们的项目中安装分布式缓存组件```Masa.Contrib.Caching.Distributed.StackExchangeRedis```，或在项目目录下使用命令行安装
+1. 第一步，在我们的项目中安装分布式缓存组件```Masa.Contrib.Caching.Distributed.StackExchangeRedis``` （下载1.0.0-preview.18版本以上），或在项目目录下使用命令行安装
 
 ```shell
-dotnet add package Masa.Contrib.Caching.Distributed.StackExchangeRedis
+dotnet add package Masa.Contrib.Caching.Distributed.StackExchangeRedis --version 1.0.0-preview.18
 ```
 
 2. 第二步，在Program.cs文件中添加以下代码
@@ -99,7 +99,7 @@ builder.Services.AddDistributedCache(opt =>
 });
 ```
 
-3. 第三步，在配置文件中增加以下配置。这边在补充以下，masa的redis分布式缓存是支持集群的，只需要在Servers下配置多个节点就行
+3. 第三步，在配置文件中增加以下配置。这边再补充以下，masa的redis分布式缓存是支持集群的，只需要在Servers下配置多个节点就行
 
 ```json
 "RedisOptions": {
@@ -114,30 +114,189 @@ builder.Services.AddDistributedCache(opt =>
 }
 ```
 
-4. 在构造函数中注入 ```IDistributedCacheClient``` 或者 ```IDistributedCacheClientFactory``` 对象，其实直接注入的```IDistributedCacheClient``` 也是由```IDistributedCacheClientFactory``` 创建之后，注入到容器中的单例对象。
+4. 第四步：在构造函数中注入 ```IDistributedCacheClient``` 或者 ```IDistributedCacheClientFactory``` 对象，其实直接注入的```IDistributedCacheClient``` 也是由```IDistributedCacheClientFactory``` 创建之后，注入到容器中的单例对象。
 
    * 构造函数中注入 ```IDistributedCacheClient``` ：这个注入的对象生命周期为单例，也就是说从容器中获取的始终是同一个对象
-   * 使用```IDistributedCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，我看这内部打开了redis连接并没有关闭
 
+   ```c#
+       public class DistributedCacheClientController : ControllerBase
+       {
+           private static readonly string[] Summaries = new[] { "Data1", "Data2", "Data3" };
+           private readonly IDistributedCacheClient _distributedCacheClient;
+           public DistributedCacheClientController(IDistributedCacheClient distributedCacheClient) => _distributedCacheClient = distributedCacheClient;
    
+           [HttpGet]
+           public async Task<IEnumerable<string>> Get()
+           {
+               var cacheList = await _distributedCacheClient.GetAsync<string[]>(nameof(Summaries));
+               if (cacheList != null)
+               {
+                   Console.WriteLine($"从缓存中获取数据：【{string.Join(",", cacheList)}】");
+                   return cacheList;
+               }
+               Console.WriteLine($"写入数据到缓存");
+               await _distributedCacheClient.SetAsync(nameof(Summaries), Summaries);
+               return Summaries;
+           }
+       }
+   ```
 
-4. 
+   * 使用```IDistributedCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，**需要手动管理对象生命周期，比如不使用之后要dispose**。扩展：这块还可以使用自己实现的IDistributedCacheClient实例去操作，不太理解的可以看下我[上篇文章]((https://www.cnblogs.com/norain/p/17180328.html)) 。不过建议直接注入```IDistributedCacheClient``` 使用，不太推荐工厂，除非你有场景需要用到一个新的实例。
 
+   ```c#
+   public class DistributedCacheClientFactoryController : ControllerBase
+   {
+       private static readonly string[] FactorySummaries = new[] { "FactoryData1", "FactoryData2", "FactoryData3" };
+       private readonly IDistributedCacheClientFactory _distributedCacheClientFactory;
+       public DistributedCacheClientFactoryController(IDistributedCacheClientFactory distributedCacheClientFactory) => _distributedCacheClientFactory = distributedCacheClientFactory;
+   
+       [HttpGet]
+       public async Task<IEnumerable<string>> GetByFactory()
+       {
+           using (var distributedCacheClient = _distributedCacheClientFactory.Create())
+           {
+               var cacheList = await distributedCacheClient.GetAsync<string[]>(nameof(FactorySummaries));
+               if (cacheList != null)
+               {
+                   Console.WriteLine($"使用工厂从缓存中获取数据：【{string.Join(",", cacheList)}】");
+                   return cacheList;
+               }
+               Console.WriteLine($"使用工厂写入数据到缓存");
+               await distributedCacheClient.SetAsync(nameof(FactorySummaries), FactorySummaries);
+               return FactorySummaries;
+           }
+       }
+   }
+   ```
 
+4. 最终结果：<span style="color:red">**注：记得启动本地redis**</span>
 
-
-
-
-
-
-
-
+![](./images/multilevel_cache/distributed_cache_run_result.png)
 
 ### 多级缓存使用
 
+1. 第一步，在我们的项目中安装组件： ```Masa.Contrib.Caching.MultilevelCache``` 和 ```Masa.Contrib.Caching.Distributed.StackExchangeRedis``` （下载1.0.0-preview.18版本以上），或在项目目录下使用命令行安装
 
+```shell
+dotnet add package Masa.Contrib.Caching.MultilevelCache --version 1.0.0-preview.18
+dotnet add package Masa.Contrib.Caching.Distributed.StackExchangeRedis --version 1.0.0-preview.18
+```
 
+2. 第二步，在Program.cs文件中添加以下代码
 
+```c#
+builder.Services.AddMultilevelCache(opt =>
+{
+    opt.UseStackExchangeRedisCache();
+});
+```
+
+3. 第三步，在配置文件中增加以下配置。多级缓存依赖于分布式缓存，所以需要添加redis配置，如下：
+
+```json
+"RedisOptions": {
+  "Servers": [
+    {
+      "Host": "127.0.0.1",
+      "Port": "6391"
+    }
+  ],
+  "DefaultDatabase": 0,
+  "Password": "123456"
+}
+```
+
+4. 第四步：在构造函数中注入 ```IMultilevelCacheClient``` 或者 ```IMultilevelCacheClientFactory``` 对象。
+
+   * 构造函数中注入 ```IMultilevelCacheClient``` ：这个注入的对象生命周期为单例，也就是说从容器中获取的始终是同一个对象
+
+   ```c#
+   public class MultilevelCacheClientController : ControllerBase
+   {
+       private readonly IMultilevelCacheClient _multilevelCacheClient;
+       public MultilevelCacheClientController(IMultilevelCacheClient multilevelCacheClient) => _multilevelCacheClient = multilevelCacheClient;
+   
+       [HttpGet]
+       public async Task<string> GetAsync()
+       {
+           var key = "MultilevelCacheFactoryTest";
+           var cacheValue = await _multilevelCacheClient.GetAsync<string>(key);
+           if (cacheValue != null)
+           {
+               Console.WriteLine($"get data by multilevel cahce：【{cacheValue}】");
+               return cacheValue;
+           }
+           cacheValue = value;
+           Console.WriteLine($"write data【{cacheValue}】to multilevel cache");
+           await _multilevelCacheClient.SetAsync(key, cacheValue);
+           return cacheValue;
+       }
+   }
+   ```
+
+   * 使用```IDistributedCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，**需要手动管理对象生命周期，比如不使用之后要dispose**。建议直接注入```IDistributedCacheClient``` 使用，不太推荐工厂，除非你有场景需要用到一个新的实例。
+
+   ```c#
+   public class MultilevelCacheClientController : ControllerBase
+   {
+       const string key = "MultilevelCacheTest";
+       private readonly IMultilevelCacheClient _multilevelCacheClient;
+       public MultilevelCacheClientController(IMultilevelCacheClient multilevelCacheClient) => _multilevelCacheClient = multilevelCacheClient;
+   
+       [HttpGet]
+       public async Task<string?> GetAsync()
+       {
+           var cacheValue = await _multilevelCacheClient.GetAsync<string>(key, val => { Console.WriteLine($"值被改变了：{val}"); }, null);
+           if (cacheValue != null)
+           {
+               Console.WriteLine($"get data by multilevel cahce：【{cacheValue}】");
+               return cacheValue;
+           }
+           cacheValue = "multilevelClient";
+           Console.WriteLine($"use factory write data【{cacheValue}】to multilevel cache");
+           await _multilevelCacheClient.SetAsync(key, cacheValue);
+           return cacheValue;
+       }
+   
+       [HttpPost]
+       public async Task<string?> SetAsync(string value = "multilevelClient")
+       {
+           Console.WriteLine($"use factory write data【{value}】to multilevel cache");
+           await _multilevelCacheClient.SetAsync(key, value);
+           return value;
+       }
+   
+       [HttpDelete]
+       public async Task RemoveAsync()
+       {
+           await _multilevelCacheClient.RemoveAsync<string>(key);
+       }
+   }
+   ```
+
+4. 运行程序
+
+   * 我这边启动以命令行启动了两个服务模拟不同服务或者集群
+
+     ```c#
+     dotnet run --urls=http://*:2001
+     dotnet run --urls=http://*:2002
+     ```
+
+   * 在端口2001的程序写入数据之后，端口2002的程序能够读取到数据
+
+   ![](./images/multilevel_cache/multilevel_result1.png)
+
+   * 在端口2001的程序修改 缓存数据 ，端口2002的程序能够同步新的缓存数据过来
+
+   ![](./images/multilevel_cache/multilevel_result2.png)
 
 ## 总结
+
+> 其实任何语言都能实现这个多级缓存功能，我们去看框架源码，不仅是对功能原理的探索，也是学习别人的设计思想。
+
+* 提升访问速度，降低分布式缓存压力：masa的多级缓存优先从内存读取数据，提高程序访问速度。间接减少网络请求，降低了分布式缓存的压力。
+* 缓存高度扩展性：MASA Framework的缓存组件可以支持自己去实现自己的缓存逻辑，比如说目前masa的分布式缓存使用redis，我想用其它的缓存组件，或者我觉得masa实现的不优雅，完全可以自己定制。
+
+
 
