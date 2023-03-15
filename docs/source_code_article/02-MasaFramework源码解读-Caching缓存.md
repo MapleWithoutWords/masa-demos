@@ -213,32 +213,6 @@ builder.Services.AddMultilevelCache(opt =>
    ```c#
    public class MultilevelCacheClientController : ControllerBase
    {
-       private readonly IMultilevelCacheClient _multilevelCacheClient;
-       public MultilevelCacheClientController(IMultilevelCacheClient multilevelCacheClient) => _multilevelCacheClient = multilevelCacheClient;
-   
-       [HttpGet]
-       public async Task<string> GetAsync()
-       {
-           var key = "MultilevelCacheFactoryTest";
-           var cacheValue = await _multilevelCacheClient.GetAsync<string>(key);
-           if (cacheValue != null)
-           {
-               Console.WriteLine($"get data by multilevel cahce：【{cacheValue}】");
-               return cacheValue;
-           }
-           cacheValue = value;
-           Console.WriteLine($"write data【{cacheValue}】to multilevel cache");
-           await _multilevelCacheClient.SetAsync(key, cacheValue);
-           return cacheValue;
-       }
-   }
-   ```
-
-   * 使用```IDistributedCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，**需要手动管理对象生命周期，比如不使用之后要dispose**。建议直接注入```IDistributedCacheClient``` 使用，不太推荐工厂，除非你有场景需要用到一个新的实例。
-
-   ```c#
-   public class MultilevelCacheClientController : ControllerBase
-   {
        const string key = "MultilevelCacheTest";
        private readonly IMultilevelCacheClient _multilevelCacheClient;
        public MultilevelCacheClientController(IMultilevelCacheClient multilevelCacheClient) => _multilevelCacheClient = multilevelCacheClient;
@@ -272,6 +246,33 @@ builder.Services.AddMultilevelCache(opt =>
            await _multilevelCacheClient.RemoveAsync<string>(key);
        }
    }
+   ```
+
+   * 使用```IMultilevelCacheClientFactory``` ：使用工厂创建的每一个对象都是一个新的实例，**需要手动管理对象生命周期，比如不使用之后要dispose**。建议直接注入```IMultilevelCacheClient``` 使用，不太推荐工厂，除非你有场景需要用到一个新的实例。
+
+   ```c#
+       public class MultilevelCacheClientFactoryController : ControllerBase
+       {
+           const string key = "MultilevelCacheFactoryTest";
+           private readonly IMultilevelCacheClientFactory _multilevelCacheClientFactory;
+           public MultilevelCacheClientFactoryController(IMultilevelCacheClientFactory multilevelCacheClientFactory) => _multilevelCacheClientFactory = multilevelCacheClientFactory;
+   
+           [HttpGet]
+           public async Task<string?> TestAsync(string value= "MultilevelCacheFactoryValue")
+           {
+               using var multilevelCacheClient = _multilevelCacheClientFactory.Create();
+               var cacheValue = await multilevelCacheClient.GetAsync<string>(key);
+               if (cacheValue != null)
+               {
+                   Console.WriteLine($"use factory get data by multilevel cache：【{cacheValue}】");
+                   return cacheValue;
+               }
+               cacheValue = value;
+               Console.WriteLine($"use factory write data【{cacheValue}】to multilevel cache");
+               await multilevelCacheClient.SetAsync(key, cacheValue);
+               return cacheValue;
+           }
+       }
    ```
 
 4. 运行程序
