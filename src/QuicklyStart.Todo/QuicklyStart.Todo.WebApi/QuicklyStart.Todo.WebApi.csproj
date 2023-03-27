@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,14 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Masa.Contrib.Data.EFCore.Pomelo.MySql" Version="1.0.0-preview.22" />
+    <PackageReference Include="Masa.Contrib.Data.EFCore.Sqlite" Version="1.0.0-preview.22" />
+    <PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="1.0.0-preview.22" />
     <PackageReference Include="Masa.Contrib.ReadWriteSpliting.Cqrs" Version="0.6.0-preview.3" />
     <PackageReference Include="Masa.Contrib.Service.MinimalAPIs" Version="1.0.0-preview.22" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\..\QuicklyStart\QuicklyStart.Todo.Constracs\QuicklyStart.Todo.Constracs.csproj" />
   </ItemGroup>
 
 </Project>

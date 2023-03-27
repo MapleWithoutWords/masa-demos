@@ -1,0 +1,11 @@
+﻿global using QuicklyStart.Todo.WebApi.Entities;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.Extensions.Options;
+global using Masa.BuildingBlocks.Ddd.Domain.Entities;
+global using Masa.BuildingBlocks.ReadWriteSpliting.Cqrs.Commands;
+global using QuicklyStart.Todo.Constracs;
+global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Queries;
+global using Masa.Utils.Models;
+global using QuicklyStart.Todo.WebApi.Application.Queries;
