@@ -1,7 +1,3 @@
-﻿
-namespace QuicklyStart.Todo.WebApi.Application.Commands
-{
-    public record CreateTodoCommand(TodoCreateUpdateDto dto) : Command
-    {
-    }
-}
+﻿namespace QuicklyStart.Todo.WebApi.Application.Commands;
+
+public record CreateTodoCommand(TodoCreateUpdateDto Dto) : Command { }

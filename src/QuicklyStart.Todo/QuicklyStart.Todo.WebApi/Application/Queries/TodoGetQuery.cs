@@ -1,7 +1,6 @@
-﻿namespace QuicklyStart.Todo.WebApi.Application.Queries
+﻿namespace QuicklyStart.Todo.WebApi.Application.Queries;
+
+public record TodoGetQuery(Guid Id) : Query<TodoGetDto>
 {
-    public record TodoGetQuery : Query<TodoGetDto>
-    {
-        public override TodoGetDto Result { get; set; }
-    }
+    public override TodoGetDto Result { get; set; }
 }

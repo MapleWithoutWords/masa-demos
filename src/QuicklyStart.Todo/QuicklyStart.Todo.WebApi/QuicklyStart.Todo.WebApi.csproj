@@ -8,13 +8,22 @@
 
   <ItemGroup>
     <PackageReference Include="Masa.Contrib.Data.EFCore.Sqlite" Version="1.0.0-preview.22" />
+    <PackageReference Include="Masa.Contrib.Data.Mapping.Mapster" Version="1.0.0-preview.22" />
     <PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="1.0.0-preview.22" />
     <PackageReference Include="Masa.Contrib.ReadWriteSpliting.Cqrs" Version="0.6.0-preview.3" />
     <PackageReference Include="Masa.Contrib.Service.MinimalAPIs" Version="1.0.0-preview.22" />
+    <PackageReference Include="Masa.Contrib.Exceptions" Version="1.0.0-preview.22" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\QuicklyStart\QuicklyStart.Todo.Constracs\QuicklyStart.Todo.Constracs.csproj" />
+    <ProjectReference Include="..\QuicklyStart.Todo.Constracs\QuicklyStart.Todo.Constracs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="demodb.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace QuicklyStart.Todo.WebApi.Entities
 {
-    public class TodoDbContext : MasaDbContext<TodoDbContext>
+    public class TodoDbContext : MasaDbContext
     {
         public DbSet<TodoEntity> Todos { get; set; }
 
