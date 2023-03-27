@@ -20,15 +20,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Caching", "Caching", "{2292
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.DistributedCache", "src\CachingDemo\Demo.DistributedCache\Demo.DistributedCache.csproj", "{D525DD00-7703-4696-BB9A-B31C2E8AA8BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.LocalConfiguration", "src\Configuration\Demo.LocalConfiguration\Demo.LocalConfiguration.csproj", "{2611476D-09AF-4252-8B6E-224E149091DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.LocalConfiguration", "src\Configuration\Demo.LocalConfiguration\Demo.LocalConfiguration.csproj", "{2611476D-09AF-4252-8B6E-224E149091DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{EAAD692C-3307-4BBF-A6B3-32C884190705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MinimalApi.WebApi", "Demo.MinimalApi\Demo.MinimalApi.WebApi.csproj", "{3DEAB6E1-D744-44DF-A79C-1B65C24C2839}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.MinimalApi.WebApi", "src\MinimalApi\Demo.MinimalApi\Demo.MinimalApi.WebApi.csproj", "{3DEAB6E1-D744-44DF-A79C-1B65C24C2839}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MinimalApi", "MinimalApi", "{EFFE8059-1799-4DB1-9167-7CBC5DC033E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MinimalApi.Service", "Demo.MinimalApi.Service\Demo.MinimalApi.Service.csproj", "{55640754-6DD0-419C-9DF5-9F1873B7560E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.MinimalApi.Service", "src\MinimalApi\Demo.MinimalApi.Service\Demo.MinimalApi.Service.csproj", "{55640754-6DD0-419C-9DF5-9F1873B7560E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuicklyStart", "QuicklyStart", "{2926F0D1-C112-4FD8-B89A-C0595DDF7898}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuicklyStart.Todo.WebApi", "src\QuicklyStart.Todo\QuicklyStart.Todo.WebApi\QuicklyStart.Todo.WebApi.csproj", "{DFE70528-02F7-4CBC-9398-DE6241A28E6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickly.Todo.BlazorWeb", "src\QuicklyStart.Todo\Quickly.Todo.BlazorWeb\Quickly.Todo.BlazorWeb.csproj", "{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +66,14 @@ Global
 		{55640754-6DD0-419C-9DF5-9F1873B7560E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55640754-6DD0-419C-9DF5-9F1873B7560E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55640754-6DD0-419C-9DF5-9F1873B7560E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE70528-02F7-4CBC-9398-DE6241A28E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE70528-02F7-4CBC-9398-DE6241A28E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE70528-02F7-4CBC-9398-DE6241A28E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE70528-02F7-4CBC-9398-DE6241A28E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +88,9 @@ Global
 		{3DEAB6E1-D744-44DF-A79C-1B65C24C2839} = {EFFE8059-1799-4DB1-9167-7CBC5DC033E0}
 		{EFFE8059-1799-4DB1-9167-7CBC5DC033E0} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
 		{55640754-6DD0-419C-9DF5-9F1873B7560E} = {EFFE8059-1799-4DB1-9167-7CBC5DC033E0}
+		{2926F0D1-C112-4FD8-B89A-C0595DDF7898} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
+		{DFE70528-02F7-4CBC-9398-DE6241A28E6C} = {2926F0D1-C112-4FD8-B89A-C0595DDF7898}
+		{0188F6C5-33DA-47D0-A9B5-8A0F7F84F787} = {2926F0D1-C112-4FD8-B89A-C0595DDF7898}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F37FEC-2737-4AA5-87ED-DAEC85E74ABD}
