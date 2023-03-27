@@ -31,6 +31,15 @@ public class TodoCommandHandler
         await _todoDbContext.SaveChangesAsync();
     }
 
+    private async Task ValidateAsync(string title, Guid? id = null)
+    {
+        var todo = await _todoDbContext.Set<TodoEntity>().AsNoTracking().FirstOrDefaultAsync(t => t.Title == title && t.Id != id);
+        if (todo != null)
+        {
+            throw new UserFriendlyException("代办已存在");
+        }
+    }
+
     [EventHandler]
     public async Task DeleteAsync(DeleteTodoCommand command)
     {
@@ -44,12 +53,16 @@ public class TodoCommandHandler
         await _todoDbContext.SaveChangesAsync();
     }
 
-    private async Task ValidateAsync(string title, Guid? id = null)
+    [EventHandler]
+    public async Task DoneAsync(DoneTodoCommand command)
     {
-        var todo = await _todoDbContext.Set<TodoEntity>().AsNoTracking().FirstOrDefaultAsync(t => t.Title == title && t.Id != id);
-        if (todo != null)
+        var todo = await _todoDbContext.Set<TodoEntity>().AsNoTracking().FirstOrDefaultAsync(t => t.Id == command.Id);
+        if (todo == null)
         {
-            throw new UserFriendlyException("代办已存在");
+            return;
         }
+        todo.Done = command.Done;
+        _todoDbContext.Set<TodoEntity>().Update(todo);
+        await _todoDbContext.SaveChangesAsync();
     }
 }
