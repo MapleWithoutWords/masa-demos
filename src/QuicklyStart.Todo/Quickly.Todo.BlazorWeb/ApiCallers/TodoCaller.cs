@@ -36,4 +36,9 @@ public class TodoCaller : HttpClientCallerBase
     {
         var result = await Caller.DeleteAsync($"{_prefix}/{id}", null);
     }
+
+    public async Task DoneAsync(Guid id, bool done)
+    {
+        var result = await Caller.DeleteAsync($"{_prefix}/done?id={id}&done={done.ToString().ToLower()}", null);
+    }
 }

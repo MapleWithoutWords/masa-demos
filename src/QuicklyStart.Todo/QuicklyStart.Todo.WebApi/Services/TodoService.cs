@@ -2,6 +2,11 @@
 
 public class TodoService : ServiceBase
 {
+    public TodoService()
+    {
+        App.MapPost("api/v1/todoes/done", DoneAsync);
+    }
+
     public async Task<PaginatedListBase<TodoGetListDto>> GetListAsync(IEventBus eventBus, string? keyword, bool? done, int pageIndex = -1, int pageDataCount = 10)
     {
         var todoQuery = new TodoGetListQuery(keyword, done, pageIndex, pageDataCount);
@@ -34,8 +39,7 @@ public class TodoService : ServiceBase
         await eventBus.PublishAsync(command);
     }
 
-    [HttpPost("done")]
-    public async Task DoneAsync(IEventBus eventBus, Guid id, bool done)
+    public async Task DoneAsync(IEventBus eventBus, [FromQuery]Guid id, [FromQuery] bool done)
     {
         var command = new DoneTodoCommand(id, done);
         await eventBus.PublishAsync(command);

@@ -1,13 +1,13 @@
 ﻿@page "/"
 <MContainer Style="max-width: 500px">
 
-    <MTextField @bind-Value="_newTask"
+    <MTextField @bind-Value="_newTodo"
                 Label="What are you working on?"
                 Solo
                 OnKeyDown="OnEnterKeyDown">
         <AppendContent>
             <FadeTransition>
-                <MIcon If="@(!string.IsNullOrEmpty(_newTask))"
+                <MIcon If="@(!string.IsNullOrEmpty(_newTodo))"
                        OnClick="()=>Create()">
                     add_circle
                 </MIcon>
@@ -31,17 +31,12 @@
         <strong class="mx-4 info--text text--darken-2">
             Remaining: @RemainingTasks
         </strong>
-
         <MDivider Vertical></MDivider>
-
         <strong class="mx-4 success--text text--darken-2">
             Completed: @CompletedTasks
         </strong>
-
         <MSpacer></MSpacer>
-
         <MProgressCircular Value=Progress Class="mr-2"></MProgressCircular>
-
     </MRow>
 
     <MDivider Class="mb-4"></MDivider>
@@ -50,7 +45,6 @@
     {
         <MCard>
             <SlideYTransition>
-                @*//TODO: group*@
                 @for (var i = 0; i < _tasks.Count; i++)
                 {
                     var task = _tasks[i];
@@ -58,29 +52,46 @@
                     {
                         <MDivider></MDivider>
                     }
-
                     <MListItem>
-
-                        <MListItemAction>
-                            <MCheckbox TValue="bool" Value="@task.Done"
-                               ValueChanged="@(v => task.Done = v)"
+                        @if (editorTodoId == task.Id)
+                        {
+                            <MTextField Color="purple darken-2" @bind-Value="_updateTodo"></MTextField>
+                        }
+                        else
+                        {
+                            <MListItemAction>
+                                <MCheckbox TValue="bool" Value="@task.Done"
+                               ValueChanged="@(v => Done(task.Id,v))"
                                Color="@(task.Done ? "grey" : "primary")">
-                                <LabelContent>
-                                    <div class="@(task.Done ? "grey--text" : "primary--text") ml-4">
-                                        @task.Title
-                                    </div>
-                                </LabelContent>
-                            </MCheckbox>
-                        </MListItemAction>
+                                    <LabelContent>
+                                        <div class="@(task.Done ? "grey--text" : "primary--text") ml-4">
+                                            @task.Title
+                                        </div>
+                                    </LabelContent>
+                                </MCheckbox>
+                            </MListItemAction>
+                        }
 
                         <MSpacer></MSpacer>
+                        <MButton Icon Show="@(task.Done==false&&editorTodoId!=task.Id)" OnClick="()=>{editorTodoId=task.Id;_updateTodo=task.Title;}">
+                            <MIcon>mdi-pencil</MIcon>
+                        </MButton>
 
+                        <MButton Outlined Small Show="@(editorTodoId==task.Id)" OnClick="()=>Update(task)" Color="success" Class="mr-2">
+                            ok
+                        </MButton>
+                        <MButton Outlined Small Show="@(editorTodoId==task.Id)" OnClick="()=>editorTodoId=null">
+                            canel
+                        </MButton>
+
+                        <MButton Icon Show="@(editorTodoId!=task.Id)" OnClick="()=>Delete(task.Id)" Color="error">
+                            <MIcon>mdi-delete</MIcon>
+                        </MButton>
                         <ScrollXTransition>
                             <MIcon If="@task.Done" Color="success">
                                 mdi-check
                             </MIcon>
                         </ScrollXTransition>
-
                     </MListItem>
                 }
             </SlideYTransition>
@@ -94,7 +105,8 @@
     [Inject]
     public TodoCaller TodoCaller { get; set; }
 
-    string _newTask = "";
+    string _newTodo = "";
+    string _updateTodo = "";
 
     private List<TodoGetListDto> _tasks = new();
 
@@ -103,6 +115,8 @@
     float Progress => _tasks.Count <= 0 ? 0 : (CompletedTasks * 100f) / _tasks.Count;
 
     int RemainingTasks => _tasks.Count - CompletedTasks;
+
+    Guid? editorTodoId;
 
     async Task OnEnterKeyDown(KeyboardEventArgs eventArgs)
     {
@@ -125,9 +139,28 @@
 
     async Task Create()
     {
-        await TodoCaller.CreateAsync(new TodoCreateUpdateDto { Title = _newTask, Done = false });
+        await TodoCaller.CreateAsync(new TodoCreateUpdateDto { Title = _newTodo, Done = false });
 
         await LoadListDataAsync();
-        _newTask = "";
+        _newTodo = "";
+    }
+
+    async Task Done(Guid id, bool done)
+    {
+        await TodoCaller.DoneAsync(id, done);
+        await LoadListDataAsync();
+    }
+
+    async Task Update(TodoGetListDto task)
+    {
+        await TodoCaller.UpdateAsync(task.Id, new TodoCreateUpdateDto { Title = _updateTodo, Done = task.Done });
+        await LoadListDataAsync();
+        editorTodoId = null;
+    }
+    async Task Delete(Guid id)
+    {
+        await TodoCaller.DeleteAsync(id);
+        await LoadListDataAsync();
+        editorTodoId = null;
     }
 }

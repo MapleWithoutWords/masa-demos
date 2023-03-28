@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEventBus();
 builder.Services.AddMasaDbContext<TodoDbContext>(opt => opt.UseSqlite());
+builder.Services.AddMasaMinimalAPIs();
 
 //Swagger依赖Endpoint的一些服务，必须AddEndpointsApiExplorer，不然swagger不能使用
 builder.Services.AddEndpointsApiExplorer()
@@ -22,10 +23,10 @@ builder.Services.AddEndpointsApiExplorer()
     });
 builder.Services.AddAutoInject();
 
-var app = builder.AddServices();
+var app = builder.Build();
 
 app.UseMasaExceptionHandler();
-
+app.MapMasaMinimalAPIs();
 #region MigrationDb
 using var context = app.Services.CreateScope().ServiceProvider.GetService<TodoDbContext>();
 {
