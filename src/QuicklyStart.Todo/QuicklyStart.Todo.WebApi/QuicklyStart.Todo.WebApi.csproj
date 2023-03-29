@@ -13,7 +13,7 @@
     <PackageReference Include="Masa.Contrib.ReadWriteSpliting.Cqrs" Version="0.6.0-preview.3" />
     <PackageReference Include="Masa.Contrib.Service.MinimalAPIs" Version="1.0.0-preview.22" />
     <PackageReference Include="Masa.Contrib.Exceptions" Version="1.0.0-preview.22" />
-	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
