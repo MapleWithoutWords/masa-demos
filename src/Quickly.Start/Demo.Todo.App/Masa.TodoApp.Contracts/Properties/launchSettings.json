@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Masa.TodoApp.Contracts": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:50378;http://localhost:50379"
+    }
+  }
+}

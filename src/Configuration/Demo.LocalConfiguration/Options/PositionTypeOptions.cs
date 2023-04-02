@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Demo.LocalConfiguration.Options
 {
-    public class PositionOptions : LocalMasaConfigurationOptions
+    public class PositionTypeOptions : LocalMasaConfigurationOptions
     {
         public List<string> PositionTypes { get; set; }
     }
