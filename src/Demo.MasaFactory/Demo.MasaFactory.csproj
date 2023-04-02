@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Masa.BuildingBlocks.Data.Contracts" Version="1.0.0-preview.15" />
+    <PackageReference Include="Masa.BuildingBlocks.Data.Contracts" Version="$(MASAFrameworkVersion)" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 	<ItemGroup>

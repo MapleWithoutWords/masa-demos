@@ -8,8 +8,8 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Masa.Contrib.Caching.Distributed.StackExchangeRedis" Version="1.0.0-preview.18" />
-		<PackageReference Include="Masa.Contrib.Caching.MultilevelCache" Version="1.0.0-preview.18" />
+		<PackageReference Include="Masa.Contrib.Caching.Distributed.StackExchangeRedis" Version="$(MASAFrameworkVersion)" />
+		<PackageReference Include="Masa.Contrib.Caching.MultilevelCache" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
 </Project>
