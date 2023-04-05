@@ -42,7 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.TodoApp.WebBalzor", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dispatcher", "Dispatcher", "{2C878958-9CE4-4F45-B6B1-5A4D087E55D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.EventBus", "src\Dispatcher\Demo.EventBus\Demo.EventBus.csproj", "{0EF397C4-E4E1-4F49-969E-41DA40A76680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.IntegrationEventBus", "src\Dispatcher\Demo.IntegrationEventBus\Demo.IntegrationEventBus.csproj", "{0EF397C4-E4E1-4F49-969E-41DA40A76680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.EventBus", "src\Dispatcher\Demo.EventBus\Demo.EventBus.csproj", "{7546359B-7757-42B3-863B-AF0D289F93BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +92,10 @@ Global
 		{0EF397C4-E4E1-4F49-969E-41DA40A76680}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EF397C4-E4E1-4F49-969E-41DA40A76680}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EF397C4-E4E1-4F49-969E-41DA40A76680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7546359B-7757-42B3-863B-AF0D289F93BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7546359B-7757-42B3-863B-AF0D289F93BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7546359B-7757-42B3-863B-AF0D289F93BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7546359B-7757-42B3-863B-AF0D289F93BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +117,7 @@ Global
 		{4AB14ABB-E9BB-43E2-ABF3-6D7C1A3E105A} = {67B4FA90-7B94-461C-9FA3-D9A4186EDA51}
 		{2C878958-9CE4-4F45-B6B1-5A4D087E55D6} = {7733DADD-FA8D-479E-87DC-D859C84A13E2}
 		{0EF397C4-E4E1-4F49-969E-41DA40A76680} = {2C878958-9CE4-4F45-B6B1-5A4D087E55D6}
+		{7546359B-7757-42B3-863B-AF0D289F93BD} = {2C878958-9CE4-4F45-B6B1-5A4D087E55D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F37FEC-2737-4AA5-87ED-DAEC85E74ABD}
