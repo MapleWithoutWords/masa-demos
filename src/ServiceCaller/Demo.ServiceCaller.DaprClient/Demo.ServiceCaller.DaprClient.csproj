@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Masa.Contrib.Service.Caller.DaprClient" Version="1.0.0-preview.32" />
+		<PackageReference Include="Masa.Contrib.Service.Caller.Serialization.Xml" Version="1.0.0-preview.32" />
+		<PackageReference Include="Masa.Contrib.Service.Caller.Authentication.AspNetCore" Version="1.0.0-preview.32" />
+	</ItemGroup>
+
+</Project>

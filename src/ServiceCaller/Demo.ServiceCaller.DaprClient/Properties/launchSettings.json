@@ -1,0 +1,32 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:35443",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Demo.ServiceCaller.DaprClient": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5282",
+      "environmentVariables": {
+        "DAPR_GRPC_PORT": "3601",
+        "DAPR_HTTP_PORT": "3600",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "DAPR_GRPC_PORT": "3601",
+        "DAPR_HTTP_PORT": "3600",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-using Demo.LocalConfiguration.Options;
+using Demo.DccConfiguration;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -22,9 +22,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddMasaConfiguration(configureBuilder =>
 {
+    configureBuilder.UseDcc();
     configureBuilder.UseMasaOptions(options =>
     {
-        options.MappingLocal<AppConfig>("App");
+        options.MappingConfigurationApi<AppConfig>("Dcc's Application Id", "App");
     });
 });
 
